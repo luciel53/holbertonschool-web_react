@@ -46,9 +46,27 @@ export function createEmployee(salary: number | string): DirectorInterface | Tea
   return new Director();
 }
 
-console.log(createEmployee(200));
-Teacher
-console.log(createEmployee(1000));
-Director
-console.log(createEmployee('$500'));
-Director
+export function isDirector(employee: DirectorInterface | TeacherInterface): employee is DirectorInterface {
+  return (employee as DirectorInterface).workDirectorTasks !== undefined;
+}
+
+export function executeWork(employee: DirectorInterface | TeacherInterface): string {
+  if(isDirector(employee)) {
+    return employee.workDirectorTasks();
+  } else {
+    return employee.workTeacherTasks();
+  }
+}
+
+export type Subjects = 'Math' | 'History';
+
+export function teachClass(todayClass:Subjects): string {
+  if (todayClass === 'Math') {
+    return 'Teaching Math'
+  } else if (todayClass === 'History') {
+    return 'Teaching History'
+  }
+}
+
+console.log(teachClass('Math'));
+console.log(teachClass('History'));
