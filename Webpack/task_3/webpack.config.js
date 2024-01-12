@@ -54,4 +54,5 @@ module.exports = {
     static: path.join(__dirname, 'public'),
     port: 8564, // Set the port to 8564
   },
+  devtool: 'inline-source-map',
 };
