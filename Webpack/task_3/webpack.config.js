@@ -42,7 +42,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, 'public', 'index.html'),
-      chunks: ['header', 'body', 'footer'],
+      chunks: 'all',
     }),
     new CleanWebpackPlugin(),
   ],
