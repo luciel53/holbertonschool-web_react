@@ -13,6 +13,11 @@ module.exports = {
     filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'public'),
   },
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+    },
+  },
   mode: 'development',
   module: {
     rules: [
@@ -40,10 +45,7 @@ module.exports = {
     ]
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, 'public', 'index.html'),
-      chunks: 'all',
-    }),
+    new HtmlWebpackPlugin(),
     new CleanWebpackPlugin(),
   ],
   performance: { // to fix warning size
