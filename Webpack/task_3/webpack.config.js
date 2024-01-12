@@ -42,6 +42,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, 'public', 'index.html'),
+      chunks: ['header', 'body', 'footer'],
     }),
     new CleanWebpackPlugin(),
   ],
@@ -51,8 +52,8 @@ module.exports = {
     maxAssetSize: 512000
   },
   devServer: {
-    static: path.join(__dirname, 'public'),
-    port: 8564, // Set the port to 8564
+    static: path.join(__dirname, './public'),
+    port: 8564,
   },
   devtool: 'inline-source-map',
 };
