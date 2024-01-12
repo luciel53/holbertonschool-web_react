@@ -23,11 +23,18 @@ module.exports = {
 
             },
           },
+        ],
+        use: [
           {
             loader: 'image-webpack-loader',
           }
         ],
       },
     ]
+  },
+  performance: { // to fix warning size
+    hints: false,
+    maxEntrypointSize: 512000,
+    maxAssetSize: 512000
   }
 };
