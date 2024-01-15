@@ -13,4 +13,35 @@ module.exports = {
     hot: true,
   },
   mode: 'development',
+  devtool: 'inline-source-map',
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
+      },
+      {
+        test: /\.(png|jpg|gif|svg)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+
+            },
+          },
+        ],
+        use: [
+          {
+            loader: 'image-webpack-loader',
+          }
+        ],
+      },
+    ]
+  },
+  performance: { // to fix warning size
+    hints: false,
+    maxEntrypointSize: 512000,
+    maxAssetSize: 512000
+  },
 };
