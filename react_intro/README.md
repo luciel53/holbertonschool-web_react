@@ -1,4 +1,4 @@
-React intro
+# React intro
 
     Novice
     By: Johann Kerbrat, Engineering Manager at Uber Works
