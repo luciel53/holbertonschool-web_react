@@ -2,7 +2,7 @@ import logo from './logo.jpg';
 import _ from 'lodash';
 import './App.css';
 import './Notifications.css';
-import { getFullYear, getFooterCopy } from './utils';
+import { getFullYear, getFooterCopy } from '../utils/utils';
 
 function App() {
   const isIndexPage = true;
