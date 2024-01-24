@@ -1,0 +1,20 @@
+.Notifications {
+  padding: 2rem;
+  border: 1px dashed rgb(207, 64, 88);
+}
+
+button img {
+  width: 40px;
+}
+
+li[data-priority='default'] {
+  color: rgb(8, 8, 211);
+}
+
+li[data-priority='urgent'] {
+  color: rgb(207, 64, 88);
+}
+
+.latest-notification {
+  color: red;
+}
