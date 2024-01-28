@@ -28,6 +28,7 @@ BodySectionWithMarginBottom.propTypes = {
 const styles = StyleSheet.create({
   boySectionWithMargin: {
     width: '100%',
+    margin: '0',
   },
 });
 
