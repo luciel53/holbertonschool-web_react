@@ -21,10 +21,11 @@ class Notifications extends Component {
 
   render() {
     const { displayDrawer, listNotifications } = this.props;
+    const show = css(displayDrawer ? styles.showOff : styles.showOn);
     return (
       <Fragment>
         <div className={css(styles.menuItem)}>
-          <p>Your notifications</p>
+          <p className={show}>Your notifications</p>
         </div>
         {displayDrawer && (
           <div className={css(styles.notifications)}>
@@ -82,15 +83,83 @@ Notifications.propTypes = {
   listNotifications: PropTypes.arrayOf(NotificationItemShape),
 };
 
+const screenSize = {
+  small: '@media screen and (max-width: 900px)',
+};
+
+const opacityKf = {
+  from: {
+    opacity: 0.5,
+  },
+
+  to: {
+    opacity: 1,
+  },
+};
+
+const translateYkf = {
+  '0%': {
+    transform: 'translateY(0)',
+  },
+
+  '50%': {
+    transform: 'translateY(-5px)',
+  },
+
+  '75%': {
+    transform: 'translateY(5px)',
+  },
+
+  '100%': {
+    transform: 'translateY(0)',
+  },
+};
+
+const borderKf = {
+  '0%': {
+    border: `3px dashed cyan`,
+  },
+
+  '100%': {
+    border: `3px dashed #e0344a`,
+  },
+};
+
 const styles = StyleSheet.create({
   notifications: {
+    fontSize: '20px',
     border: 'thin dotted #e0344a',
     padding: '4px 16px',
     float: 'right',
+    animationName: [borderKf],
+    animationDuration: '0.8s',
+    animationIterationCount: 1,
+    animationFillMode: 'forwards',
+    [screenSize.small]: {
+      width: '90%',
+      border: 'none',
+      backgroundColor: 'white',
+    },
   },
   menuItem: {
     textAlign: 'right',
     marginRight: '16px',
+    ':hover': {
+      cursor: 'pointer',
+      animationName: [opacityKf, translateYkf],
+      animationDuration: '1s, 0.5s',
+      animationIterationCount: 3,
+    },
+  },
+  showOff: {
+    marginRight: '8px',
+    [screenSize.small]: {
+      display: 'none',
+    },
+  },
+
+  showOn: {
+    marginRight: '8px',
   },
 });
 

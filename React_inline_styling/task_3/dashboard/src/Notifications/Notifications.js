@@ -21,10 +21,11 @@ class Notifications extends Component {
 
   render() {
     const { displayDrawer, listNotifications } = this.props;
+    const show = css(displayDrawer ? styles.showOff : styles.showOn);
     return (
       <Fragment>
         <div className={css(styles.menuItem)}>
-          <p>Your notifications</p>
+          <p className={show}>Your notifications</p>
         </div>
         {displayDrawer && (
           <div className={css(styles.notifications)}>
@@ -82,15 +83,36 @@ Notifications.propTypes = {
   listNotifications: PropTypes.arrayOf(NotificationItemShape),
 };
 
+const screenSize = {
+  small: '@media screen and (max-width: 900px)',
+};
+
 const styles = StyleSheet.create({
   notifications: {
+    fontSize: '20px',
     border: 'thin dotted #e0344a',
     padding: '4px 16px',
     float: 'right',
+    [screenSize.small]: {
+      width: '90%',
+      border: 'none',
+      backgroundColor: 'white',
+    },
   },
   menuItem: {
     textAlign: 'right',
     marginRight: '16px',
+    [screenSize.small]: {},
+  },
+  showOff: {
+    marginRight: '8px',
+    [screenSize.small]: {
+      display: 'none',
+    },
+  },
+
+  showOn: {
+    marginRight: '8px',
   },
 });
 
