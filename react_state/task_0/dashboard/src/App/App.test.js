@@ -1,112 +1,82 @@
-import React, { Component, Fragment } from 'react';
-import Header from '../Header/Header';
-import Login from '../Login/Login';
-import Footer from '../Footer/Footer';
-import Notifications from '../Notifications/Notifications';
-import CourseList from '../CourseList/CourseList';
-import BodySection from '../BodySection/BodySection';
-import BodySectionWithMarginBottom from '../BodySection/BodySectionWithMarginBottom';
-import PropTypes from 'prop-types';
-import { getLatestNotification } from '../utils/utils';
-import { StyleSheet, css } from 'aphrodite';
+import { shallow } from 'enzyme';
+import React from 'react';
+import App from './App';
+import { StyleSheetTestUtils } from 'aphrodite';
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.handleLogout = this.handleLogout.bind(this);
-    this.handleDisplayDrawer = this.handleDisplayDrawer.bind(this);
-    this.handleHideDrawer = this.handleHideDrawer.bind(this);
-    this.state = { displayDrawer: false };
-  }
-  componentDidMount() {
-    window.addEventListener('keydown', this.handleLogout);
-  }
-  componentWillUnmount() {
-    window.removeEventListener('keydown', this.handleLogout);
-  }
-  handleLogout(e) {
-    if (e.ctrlKey && e.key === 'h') {
-      e.preventDefault();
-      alert('Logging you out');
-      this.props.logOut();
-    }
-  }
-  handleDisplayDrawer() {
-    this.setState({ displayDrawer: true });
-  }
+describe('<App />', () => {
+  beforeAll(() => {
+    StyleSheetTestUtils.suppressStyleInjection();
+  });
+  afterAll(() => {
+    StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
+  });
 
-  handleHideDrawer() {
-    this.setState({ displayDrawer: false });
-  }
-  render() {
-    const listCourses = [
-      { id: 1, name: 'ES6', credit: 60 },
-      { id: 2, name: 'Webpack', credit: 20 },
-      { id: 3, name: 'React', credit: 40 },
-    ];
-    const listNotifications = [
-      { id: 1, type: 'default', value: 'New course available' },
-      { id: 2, type: 'urgent', value: 'New resume available' },
-      { id: 3, type: 'urgent', html: { __html: getLatestNotification() } },
-    ];
-    const { isLoggedIn } = this.props;
-    const { displayDrawer } = this.state;
-    return (
-      <Fragment>
-        <Notifications
-          listNotifications={listNotifications}
-          displayDrawer={displayDrawer}
-          handleDisplayDrawer={this.handleDisplayDrawer}
-          handleHideDrawer={this.handleHideDrawer}
-        />
-        <Header />
-        {isLoggedIn ? (
-          <BodySectionWithMarginBottom title='Course list'>
-            <CourseList listCourses={listCourses} />
-          </BodySectionWithMarginBottom>
-        ) : (
-          <BodySectionWithMarginBottom title='Log in to continue'>
-            <Login />
-          </BodySectionWithMarginBottom>
-        )}
-        <BodySection title='News from the School'>
-          <p className={css(styles.p)}>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto,
-            ullam? Quisquam eos temporibus, voluptate error, sunt consectetur
-            ducimus eaque dolorum sit excepturi doloribus officiis reprehenderit
-            distinctio dignissimos adipisci a aspernatur.
-          </p>
-        </BodySection>
-        <div className={css(styles.footer)}>
-          <Footer />
-        </div>
-      </Fragment>
-    );
-  }
-}
+  it('render without crashing', () => {
+    const wrapper = shallow(<App />);
+    expect(wrapper.exists());
+  });
 
-App.defaultProps = {
-  isLoggedIn: false,
-  logOut: () => undefined,
-};
+  it('contain Notifications component', () => {
+    const wrapper = shallow(<App />);
+    expect(wrapper.find('Notifications')).toHaveLength(1);
+  });
 
-App.propTypes = {
-  isLoggedIn: PropTypes.bool,
-  logOut: PropTypes.func,
-};
+  it('contain Header component', () => {
+    const wrapper = shallow(<App />);
+    expect(wrapper.find('Header')).toHaveLength(1);
+  });
 
-const styles = StyleSheet.create({
-  footer: {
-    width: '100%',
-    position: 'fixed',
-    bottom: 0,
-    textAlign: 'center',
-    fontStyle: 'italic',
-    borderTop: 'thick solid #e0344a',
-  },
-  p: {
-    marginTop: 0,
-  },
+  it('contain Login component', () => {
+    const wrapper = shallow(<App />);
+    expect(wrapper.find('Login')).toHaveLength(1);
+  });
+
+  it('contain Footer component', () => {
+    const wrapper = shallow(<App />);
+    expect(wrapper.find('Footer')).toHaveLength(1);
+  });
+
+  it('CourseList', () => {
+    const wrapper = shallow(<App />);
+    expect(wrapper.find('CourseList')).toHaveLength(0);
+  });
+
+  it('isLoggedIn true', () => {
+    const wrapper = shallow(<App isLoggedIn />);
+    expect(wrapper.exists());
+    expect(wrapper.find('Login')).toHaveLength(0);
+    expect(wrapper.find('CourseList')).toHaveLength(1);
+  });
+
+  it('logOut', () => {
+    const logOut = jest.fn(() => undefined);
+    const wrapper = shallow(<App logOut={logOut} />);
+    expect(wrapper.exists());
+    const alert = jest.spyOn(global, 'alert');
+    expect(alert);
+    expect(logOut);
+    jest.restoreAllMocks();
+  });
+
+  it('default state for displayDrawer is false', () => {
+    const wrapper = shallow(<App />);
+    expect(wrapper.state().displayDrawer).toEqual(false);
+  });
+
+  it('displayDrawer toggle handleDisplayDrawer', () => {
+    const wrapper = shallow(<App />);
+    expect(wrapper.state().displayDrawer).toEqual(false);
+    const instance = wrapper.instance();
+    instance.handleDisplayDrawer();
+    expect(wrapper.state().displayDrawer).toEqual(true);
+  });
+
+  it('displayDrawer toggle handleDisplayDrawer and handleHideDrawer', () => {
+    const wrapper = shallow(<App />);
+    expect(wrapper.state().displayDrawer).toEqual(false);
+    wrapper.instance().handleDisplayDrawer();
+    expect(wrapper.state().displayDrawer).toEqual(true);
+    wrapper.instance().handleHideDrawer();
+    expect(wrapper.state().displayDrawer).toEqual(false);
+  });
 });
-
-export default App;
